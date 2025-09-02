@@ -29,8 +29,21 @@
 
   <!-- Top header with logo -->
   <header class="site-header" role="banner">
-    <div class="site-header-inner">
-      <img src="/static/icons/queryweaver.webp" alt="QueryWeaver" />
+    <div class="site-header-inner" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+      <!-- Left: product logo -->
+      <div style="display:flex;align-items:center;gap:12px;">
+        <img src="/static/icons/queryweaver.webp" alt="QueryWeaver" />
+      </div>
+
+      <!-- Right: social links (GitHub + Discord) -->
+      <div style="display:flex;align-items:center;gap:10px;">
+        <a class="discord-link" href="https://discord.com/invite/6M4QwDXn2w" target="_blank" rel="noopener noreferrer" aria-label="Join QueryWeaver on Discord" title="Join QueryWeaver on Discord" style="display:inline-block;">
+          <img src="/static/icons/discord.svg" alt="Discord" style="height:28px;width:auto;display:block;" />
+        </a>
+        <a class="github-link" href="https://github.com/falkordb/queryweaver" target="_blank" rel="noopener noreferrer" aria-label="QueryWeaver on GitHub" title="QueryWeaver on GitHub" style="display:inline-block;">
+          <img src="/static/icons/github.svg" alt="GitHub" style="height:28px;width:auto;display:block;" />
+        </a>
+      </div>
     </div>
   </header>
 
