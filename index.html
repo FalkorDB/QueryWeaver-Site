@@ -13,15 +13,19 @@
             box-sizing: border-box;
         }
 
+        html {
+            height: 100%;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
             color: #1f2937;
             line-height: 1.6;
-            min-height: 100vh;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
             position: relative;
-            z-index: 1;
-            overflow-x: hidden;
         }
 
         body::before {
@@ -41,9 +45,9 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(229, 231, 235, 0.8);
-            position: sticky;
-            top: 0;
+            position: relative;
             z-index: 100;
+            flex-shrink: 0;
         }
 
         .site-header-inner {
@@ -59,6 +63,11 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+        }
+
+        .logo-container svg {
+            height: 40px;
+            width: auto;
         }
 
         .logo-container img {
@@ -83,51 +92,59 @@
             color: #7c3aed;
         }
 
-        /* Main container */
+        /* Main container - Fixed the flex layout */
         .landing-container {
+            flex: 1;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 1rem 2rem 0.5rem;
+            padding: 2rem;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Content wrapper for the grid */
+        .content-wrapper {
             display: grid;
-            grid-template-columns: 1fr 420px;
-            gap: 2rem;
+            grid-template-columns: 1fr auto;
+            gap: 3rem;
             align-items: start;
-            min-height: calc(100vh - 140px);
+            min-height: 0; /* Important for proper grid behavior */
         }
 
         /* Hero section */
         .hero-left {
-            padding: 0.5rem 0;
+            padding-right: 1rem;
         }
 
         .hero-title {
             font-weight: 800;
-            font-size: 2.8rem;
+            font-size: 3rem;
             line-height: 1.05;
-            margin-bottom: 0.75rem;
+            margin-bottom: 1.2rem;
             color: #111827;
             letter-spacing: -0.025em;
         }
 
         .hero-sub {
-            font-size: 1rem;
+            font-size: 1.05rem;
             color: #6b7280;
-            margin-bottom: 1rem;
+            margin-bottom: 1.4rem;
             line-height: 1.6;
-        }
-
-        .hero-tagline {
-            font-size: 0.85rem;
-            color: #9ca3af;
-            margin-top: 1rem;
-            margin-bottom: 0;
-            font-weight: 500;
         }
 
         .hero-ctas {
             display: flex;
-            gap: 1rem;
+            gap: 1.2rem;
             align-items: center;
+            margin-bottom: 1.4rem;
+        }
+
+        .hero-tagline {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            margin: 0;
+            font-weight: 500;
         }
 
         .btn-primary {
@@ -141,6 +158,7 @@
             box-shadow: 0 4px 14px 0 rgba(124, 58, 237, 0.39);
             border: none;
             cursor: pointer;
+            display: inline-block;
         }
 
         .btn-primary:hover {
@@ -158,6 +176,7 @@
             text-decoration: none;
             font-weight: 600;
             transition: all 0.2s ease;
+            display: inline-block;
         }
 
         .btn-secondary:hover {
@@ -165,27 +184,28 @@
             background: rgba(0, 0, 0, 0.02);
         }
 
-        /* Demo card */
+        /* Demo card - Fixed width behavior */
         .demo-card {
             background: rgba(255, 255, 255, 0.9);
             border-radius: 12px;
-            padding: 1rem;
+            padding: 1.5rem;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             border: 1px solid rgba(229, 231, 235, 0.8);
             backdrop-filter: blur(10px);
-            height: fit-content;
+            width: 440px;
+            max-width: 100%;
         }
 
         /* Demo tabs */
         .demo-tabs {
             display: flex;
             border-bottom: 2px solid #f3f4f6;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
             overflow-x: auto;
         }
 
         .demo-tab {
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             border-bottom: 2px solid transparent;
             background: none;
             border: none;
@@ -195,7 +215,7 @@
             transition: all 0.2s ease;
             white-space: nowrap;
             font-family: inherit;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
 
         .demo-tab:hover {
@@ -217,9 +237,9 @@
         }
 
         .demo-label {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #6b7280;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.6rem;
             font-weight: 500;
         }
 
@@ -227,20 +247,20 @@
             background: #f9fafb;
             border: 1px solid #e5e7eb;
             border-radius: 6px;
-            padding: 0.75rem;
-            font-size: 0.85rem;
+            padding: 0.9rem;
+            font-size: 0.87rem;
             color: #374151;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
             font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
             line-height: 1.4;
-            min-height: 60px;
+            min-height: 70px;
         }
 
         .demo-sql-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.6rem;
         }
 
         .demo-success {
@@ -248,7 +268,7 @@
             align-items: center;
             gap: 0.5rem;
             color: #059669;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 600;
         }
 
@@ -256,16 +276,16 @@
             background: #f9fafb;
             border: 1px solid #e5e7eb;
             border-radius: 6px;
-            padding: 0.75rem;
+            padding: 0.9rem;
             font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             color: #374151;
             overflow-x: auto;
             white-space: pre-wrap;
             line-height: 1.3;
-            margin-bottom: 1rem;
-            min-height: 140px;
-            max-height: 140px;
+            margin-bottom: 1.2rem;
+            min-height: 160px;
+            max-height: 160px;
         }
 
         /* SQL syntax highlighting */
@@ -359,33 +379,34 @@
             object-fit: cover;
         }
 
-        /* Features section */
+        /* Features section - Now positioned below the main content */
         .features-section {
-            margin-top: 1rem;
-            grid-column: 1 / -1;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(229, 231, 235, 0.5);
         }
 
         .features-row {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
             max-width: 900px;
             margin: 0 auto;
         }
 
         .feature-card {
             text-align: center;
-            padding: 1rem 0.75rem;
+            padding: 1rem;
         }
 
         .feature-icon {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             margin: 0 auto 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
+            border-radius: 6px;
             background: rgba(124, 58, 237, 0.1);
             color: #7c3aed;
         }
@@ -394,23 +415,23 @@
             font-size: 1rem;
             font-weight: 700;
             color: #111827;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
         }
 
         .feature-desc {
             color: #6b7280;
-            line-height: 1.5;
-            font-size: 0.85rem;
+            line-height: 1.4;
+            font-size: 0.9rem;
         }
 
-        /* Footer */
+        /* Footer - Fixed positioning */
         .footer {
             background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
             color: white;
             text-align: center;
             padding: 1rem;
-            margin-top: 1rem;
-            position: relative;
+            margin-top: auto; /* This pushes the footer to the bottom */
+            flex-shrink: 0;
             z-index: 2;
         }
 
@@ -429,82 +450,205 @@
             color: white;
         }
 
-        /* Mobile responsiveness */
+        /* Mobile responsiveness - Comprehensive rewrite */
         @media (max-width: 1024px) {
-            .landing-container {
+            .content-wrapper {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
-                padding: 1rem 1.5rem 0.5rem;
-                min-height: calc(100vh - 120px);
+                gap: 2rem;
             }
 
             .demo-card {
-                order: -1;
+                width: 100%;
                 max-width: 600px;
                 margin: 0 auto;
+                order: -1; /* Show demo first on mobile */
+            }
+
+            .hero-left {
+                padding-right: 0;
+                text-align: center;
             }
 
             .hero-title {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
+            }
+
+            .features-section {
+                margin-top: 3rem;
+            }
+
+            .features-row {
+                gap: 1.5rem;
             }
         }
 
         @media (max-width: 768px) {
             .site-header-inner {
-                padding: 0.75rem;
+                padding: 1rem 1.5rem;
             }
 
             .landing-container {
-                padding: 0.75rem 1rem 0.25rem;
-                gap: 1rem;
-                min-height: calc(100vh - 100px);
+                padding: 1.5rem;
+            }
+
+            .content-wrapper {
+                gap: 1.5rem;
             }
 
             .hero-title {
-                font-size: 2rem;
+                font-size: 2.2rem;
+                margin-bottom: 1rem;
             }
 
             .hero-sub {
-                font-size: 0.95rem;
+                font-size: 1rem;
+                margin-bottom: 1.2rem;
             }
 
             .hero-ctas {
                 flex-direction: column;
+                gap: 1rem;
+                margin-bottom: 1.2rem;
                 width: 100%;
-                gap: 0.75rem;
             }
 
             .btn-primary,
             .btn-secondary {
                 width: 100%;
                 text-align: center;
-                padding: 0.75rem 1.5rem;
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .demo-card {
+                padding: 1.5rem;
+            }
+
+            .demo-question,
+            .demo-sql,
+            .video-container {
+                min-height: 120px;
+                max-height: 180px;
+            }
+
+            .demo-question {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .demo-sql {
+                padding: 1rem;
+                font-size: 0.85rem;
+            }
+
+            .features-section {
+                margin-top: 2rem;
             }
 
             .features-row {
                 grid-template-columns: 1fr;
-                gap: 1rem;
+                gap: 1.5rem;
             }
 
             .feature-card {
-                padding: 0.75rem;
+                padding: 1rem;
+            }
+
+            .feature-icon {
+                width: 40px;
+                height: 40px;
+                margin-bottom: 1rem;
             }
 
             .feature-title {
-                font-size: 0.95rem;
+                font-size: 1.1rem;
+                margin-bottom: 0.8rem;
             }
 
             .feature-desc {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .site-header-inner {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .landing-container {
+                padding: 1rem;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .hero-sub {
+                font-size: 0.95rem;
+                margin-bottom: 1rem;
+            }
+
+            .hero-ctas {
+                gap: 0.8rem;
+                margin-bottom: 1rem;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                padding: 0.8rem 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            .demo-card {
+                padding: 1rem;
+            }
+
+            .demo-question,
+            .demo-sql,
+            .video-container {
+                min-height: 100px;
+                max-height: 150px;
+                padding: 0.8rem;
+            }
+
+            .demo-question {
+                font-size: 0.85rem;
+            }
+
+            .demo-sql {
                 font-size: 0.8rem;
             }
 
-            .social-links {
+            .demo-tabs {
                 gap: 0.5rem;
             }
 
-            .footer {
-                padding: 0.75rem;
-                margin-top: 0.5rem;
+            .demo-tab {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            .feature-card {
+                padding: 0.8rem;
+            }
+
+            .feature-icon {
+                width: 36px;
+                height: 36px;
+                margin-bottom: 0.8rem;
+            }
+
+            .feature-title {
+                font-size: 1rem;
+                margin-bottom: 0.6rem;
+            }
+
+            .feature-desc {
+                font-size: 0.85rem;
             }
         }
 
@@ -540,42 +684,43 @@
 
     <!-- Main content -->
     <div class="landing-container">
-        <!-- Hero section -->
-        <section class="hero-left">
-            <h1 class="hero-title">Text-to-SQL for<br>Enterprise Databases</h1>
-            <p class="hero-sub">Securely connect your MySQL or Postgres database. Query in plain English. No migration required.</p>
-            <div class="hero-ctas">
-                <a href="#" class="btn-primary" id="run-demo-btn">Run Live Demo</a>
-                <a href="#" class="btn-secondary">5-Min Setup Guide</a>
-            </div>
-            <p class="hero-tagline">Open-source • Knowledge Graph-powered</p>
-        </section>
-
-        <!-- Demo card -->
-        <aside class="demo-card">
-            <!-- Tab navigation -->
-            <div class="demo-tabs">
-                <button class="demo-tab active" data-tab="live-demo">Live Demo</button>
-                <button class="demo-tab" data-tab="tool-overview">Tool Overview</button>
-                <button class="demo-tab" data-tab="setup-guide">Setup Guide</button>
-            </div>
-
-            <!-- Live Demo Content -->
-            <div class="demo-content active" id="live-demo">
-                <div class="demo-label">Your Business Question:</div>
-                <div class="demo-question">Show me the top 5 customers by order count in London.</div>
-
-                <div class="demo-sql-header">
-                    <div class="demo-label">Generated SQL:</div>
-                    <div class="demo-success">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="8" fill="#059669"></circle>
-                            <path d="M5.5 8L7 9.5L10.5 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                        </svg>
-                        <span>Success</span>
-                    </div>
+        <div class="content-wrapper">
+            <!-- Hero section -->
+            <section class="hero-left">
+                <h1 class="hero-title">Text-to-SQL for<br>Enterprise Databases</h1>
+                <p class="hero-sub">Securely connect your MySQL or Postgres database. Query in plain English. No migration required.</p>
+                <div class="hero-ctas">
+                    <a href="#" class="btn-primary" id="run-demo-btn">Run Live Demo</a>
+                    <a href="#" class="btn-secondary">5-Min Setup Guide</a>
                 </div>
-                <pre class="demo-sql" id="demo-sql"><span class="sql-keyword">SELECT</span> c.companyName, <span class="sql-func">COUNT</span>(o.orderID) <span class="sql-keyword">AS</span> order_count
+                <p class="hero-tagline">Open-source • Knowledge Graph-powered</p>
+            </section>
+
+            <!-- Demo card -->
+            <aside class="demo-card">
+                <!-- Tab navigation -->
+                <div class="demo-tabs">
+                    <button class="demo-tab active" data-tab="live-demo">Live Demo</button>
+                    <button class="demo-tab" data-tab="tool-overview">Tool Overview</button>
+                    <button class="demo-tab" data-tab="setup-guide">Setup Guide</button>
+                </div>
+
+                <!-- Live Demo Content -->
+                <div class="demo-content active" id="live-demo">
+                    <div class="demo-label">Your Business Question:</div>
+                    <div class="demo-question">Show me the top 5 customers by order count in London.</div>
+
+                    <div class="demo-sql-header">
+                        <div class="demo-label">Generated SQL:</div>
+                        <div class="demo-success">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <circle cx="8" cy="8" r="8" fill="#059669"></circle>
+                                <path d="M5.5 8L7 9.5L10.5 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                            <span>Success</span>
+                        </div>
+                    </div>
+                    <pre class="demo-sql" id="demo-sql"><span class="sql-keyword">SELECT</span> c.companyName, <span class="sql-func">COUNT</span>(o.orderID) <span class="sql-keyword">AS</span> order_count
 <span class="sql-keyword">FROM</span> customers c
 <span class="sql-keyword">JOIN</span> orders o <span class="sql-keyword">ON</span> c.customerID = o.customerID
 <span class="sql-keyword">WHERE</span> c.city = <span class="sql-string">'London'</span>
@@ -583,46 +728,47 @@
 <span class="sql-keyword">ORDER BY</span> order_count <span class="sql-keyword">DESC</span>
 <span class="sql-keyword">LIMIT</span> <span class="sql-number">5</span>;</pre>
 
-                <div class="demo-cta">
-                    <button class="btn-light" id="demo-next">Try another question</button>
-                </div>
-            </div>
-
-            <!-- Tool Overview Video Content -->
-            <div class="demo-content" id="tool-overview">
-                <div class="demo-label">Tool Overview:</div>
-                <div class="video-container">
-                    <iframe 
-                        class="demo-video" 
-                        src="https://www.youtube.com/embed/F4hwuLlISP4" 
-                        title="QueryWeaver Tool Overview" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <p class="video-description" style="color: #6b7280; font-size: 0.9rem; margin-top: 0.5rem;">
-                    Discover how QueryWeaver transforms natural language into precise SQL queries across multiple enterprise databases.
-                </p>
-            </div>
-
-            <!-- Setup Guide Video Content -->
-            <div class="demo-content" id="setup-guide">
-                <div class="demo-label">Docker Setup Guide:</div>
-                <div class="video-container">
-                    <div class="video-placeholder">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M8 5v14l11-7z"/>
-                        </svg>
-                        <h4>Docker Setup Video</h4>
-                        <p>Step-by-step installation and configuration walkthrough</p>
+                    <div class="demo-cta">
+                        <button class="btn-light" id="demo-next">Try another question</button>
                     </div>
                 </div>
-                <p class="video-description" style="color: #6b7280; font-size: 0.9rem; margin-top: 0.5rem;">
-                    Get QueryWeaver running in your environment in minutes with our comprehensive Docker setup guide.
-                </p>
-            </div>
-        </aside>
+
+                <!-- Tool Overview Video Content -->
+                <div class="demo-content" id="tool-overview">
+                    <div class="demo-label">Tool Overview:</div>
+                    <div class="video-container">
+                        <iframe 
+                            class="demo-video" 
+                            src="https://www.youtube.com/embed/F4hwuLlISP4" 
+                            title="QueryWeaver Tool Overview" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <p class="video-description" style="color: #6b7280; font-size: 0.9rem; margin-top: 0.5rem;">
+                        Discover how QueryWeaver transforms natural language into precise SQL queries across multiple enterprise databases.
+                    </p>
+                </div>
+
+                <!-- Setup Guide Video Content -->
+                <div class="demo-content" id="setup-guide">
+                    <div class="demo-label">Docker Setup Guide:</div>
+                    <div class="video-container">
+                        <div class="video-placeholder">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                            <h4>Docker Setup Video</h4>
+                            <p>Step-by-step installation and configuration walkthrough</p>
+                        </div>
+                    </div>
+                    <p class="video-description" style="color: #6b7280; font-size: 0.9rem; margin-top: 0.5rem;">
+                        Get QueryWeaver running in your environment in minutes with our comprehensive Docker setup guide.
+                    </p>
+                </div>
+            </aside>
+        </div>
 
         <!-- Features section -->
         <section class="features-section">
