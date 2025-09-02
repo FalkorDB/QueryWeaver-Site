@@ -1,252 +1,773 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
-
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QueryWeaver — Natural language to SQL</title>
-  <link rel="stylesheet" href="/static/css/main.css">
-  <link rel="shortcut icon" href="/static/favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QueryWeaver — Text-to-SQL for Enterprise Databases</title>
+    <meta name="description" content="Transform plain English into powerful SQL queries. Securely connect your MySQL or Postgres database with our open-source, graph-powered solution.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <!-- Google Tag Manager -->
-  <script>(function (w, d, s, l, i) {
-      w[l] = w[l] || []; w[l].push({
-        'gtm.start':
-          new Date().getTime(), event: 'gtm.js'
-      }); var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-5KF7KTQH');</script>
-  <!-- End Google Tag Manager -->
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            color: #1f2937;
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(124, 58, 237, 0.08) 1px, transparent 1px);
+            background-size: 25px 25px;
+            background-repeat: repeat;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Header */
+        .site-header {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .site-header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-container img {
+            height: 40px;
+            width: auto;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .social-links a {
+            color: #6b7280;
+            transition: color 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .social-links a:hover {
+            color: #7c3aed;
+        }
+
+        /* Main container */
+        .landing-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 2rem 1rem;
+            display: grid;
+            grid-template-columns: 1fr 450px;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        /* Hero section */
+        .hero-left {
+            padding: 1rem 0;
+        }
+
+        .hero-title {
+            font-weight: 800;
+            font-size: 3.2rem;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            color: #111827;
+            letter-spacing: -0.025em;
+        }
+
+        .hero-sub {
+            font-size: 1.1rem;
+            color: #6b7280;
+            margin-bottom: 1.25rem;
+            line-height: 1.7;
+        }
+
+        .hero-tagline {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: #7c3aed;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px 0 rgba(124, 58, 237, 0.39);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #6d28d9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px 0 rgba(124, 58, 237, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #374151;
+            padding: 1rem 2rem;
+            border: 1.5px solid #d1d5db;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: #9ca3af;
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        /* Demo card */
+        .demo-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(229, 231, 235, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Demo tabs */
+        .demo-tabs {
+            display: flex;
+            border-bottom: 2px solid #f3f4f6;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .demo-tab {
+            padding: 0.75rem 1.5rem;
+            border-bottom: 2px solid transparent;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: #6b7280;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .demo-tab:hover {
+            color: #374151;
+        }
+
+        .demo-tab.active {
+            border-bottom-color: #7c3aed;
+            color: #7c3aed;
+        }
+
+        /* Demo content */
+        .demo-content {
+            display: none;
+        }
+
+        .demo-content.active {
+            display: block;
+        }
+
+        .demo-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .demo-question {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 0.9rem;
+            color: #374151;
+            margin-bottom: 1.5rem;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+            line-height: 1.5;
+        }
+
+        .demo-sql-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .demo-success {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #059669;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .demo-sql {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+            font-size: 0.875rem;
+            color: #374151;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            line-height: 1.4;
+            margin-bottom: 1.5rem;
+            min-height: 180px;
+        }
+
+        /* SQL syntax highlighting */
+        .demo-sql .sql-keyword { color: #7c3aed; font-weight: 600; }
+        .demo-sql .sql-string { color: #059669; }
+        .demo-sql .sql-func { color: #2563eb; }
+        .demo-sql .sql-number { color: #d97706; }
+
+        .demo-sql.typing::after {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 1em;
+            background: #7c3aed;
+            margin-left: 4px;
+            vertical-align: baseline;
+            animation: blink-caret 1s steps(1) infinite;
+        }
+
+        @keyframes blink-caret {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .demo-cta .btn-light {
+            width: 100%;
+            background: rgba(124, 58, 237, 0.1);
+            color: #7c3aed;
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .demo-cta .btn-light:hover {
+            background: rgba(124, 58, 237, 0.15);
+            transform: translateY(-1px);
+        }
+
+        /* Video container */
+        .video-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: #6b7280;
+            text-align: center;
+        }
+
+        .video-placeholder svg {
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .video-placeholder h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+
+        .video-placeholder p {
+            font-size: 0.9rem;
+            max-width: 200px;
+        }
+
+        .demo-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Features section */
+        .features-section {
+            margin-top: 2rem;
+            grid-column: 1 / -1;
+        }
+
+        .features-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(124, 58, 237, 0.1);
+            color: #7c3aed;
+        }
+
+        .feature-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+
+        .feature-desc {
+            color: #6b7280;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            font-size: 0.9rem;
+        }
+
+        .footer-content a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+        }
+
+        .footer-content a:hover {
+            color: white;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 1024px) {
+            .landing-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                padding: 3rem 1.5rem 2rem;
+            }
+
+            .demo-card {
+                order: -1;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .site-header-inner {
+                padding: 1rem;
+            }
+
+            .landing-container {
+                padding: 2rem 1rem;
+                gap: 2rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-ctas {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
+
+            .features-row {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .social-links {
+                gap: 0.75rem;
+            }
+        }
+
+        /* Icon styles */
+        .icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+    </style>
 </head>
-
 <body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="site-header-inner">
+            <div class="logo-container">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 50'%3E%3Ctext x='10' y='35' font-family='Arial, sans-serif' font-size='24' font-weight='bold' fill='%23111827'%3EQueryWeaver%3C/text%3E%3C/svg%3E" alt="QueryWeaver">
+            </div>
+            <div class="social-links">
+                <a href="https://discord.com/invite/Y2mMT9VdMy" aria-label="Discord" target="_blank" rel="noopener">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
+                    </svg>
+                </a>
+                <a href="https://github.com/FalkorDB/falkordb" aria-label="GitHub" target="_blank" rel="noopener">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </header>
 
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5KF7KTQH" height="0" width="0"
-      style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
+    <!-- Main content -->
+    <div class="landing-container">
+        <!-- Hero section -->
+        <section class="hero-left">
+            <h1 class="hero-title">Text-to-SQL for<br>Enterprise Databases</h1>
+            <p class="hero-sub">Securely connect your MySQL or Postgres database. Query in plain English. No migration required.</p>
+            <div class="hero-ctas">
+                <a href="#" class="btn-primary" id="run-demo-btn">Run Live Demo</a>
+                <a href="#" class="btn-secondary">5-Min Setup Guide</a>
+            </div>
+            <p class="hero-tagline">Open-source • Knowledge Graph-powered</p>
+        </section>
 
-  <!-- Top header with logo -->
-  <header class="site-header" role="banner">
-    <div class="site-header-inner" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-      <!-- Left: product logo -->
-      <div style="display:flex;align-items:center;gap:12px;">
-        <img src="/static/icons/queryweaver.webp" alt="QueryWeaver" />
-      </div>
+        <!-- Demo card -->
+        <aside class="demo-card">
+            <!-- Tab navigation -->
+            <div class="demo-tabs">
+                <button class="demo-tab active" data-tab="live-demo">Live Demo</button>
+                <button class="demo-tab" data-tab="tool-overview">Tool Overview</button>
+                <button class="demo-tab" data-tab="setup-guide">Setup Guide</button>
+            </div>
 
-      <!-- Right: social links (GitHub + Discord) -->
-      <div style="display:flex;align-items:center;gap:10px;">
-        <a class="discord-link" href="https://discord.com/invite/6M4QwDXn2w" target="_blank" rel="noopener noreferrer" aria-label="Join QueryWeaver on Discord" title="Join QueryWeaver on Discord" style="display:inline-block;">
-          <img src="/static/icons/discord.svg" alt="Discord" style="height:28px;width:auto;display:block;" />
-        </a>
-        <a class="github-link" href="https://github.com/falkordb/queryweaver" target="_blank" rel="noopener noreferrer" aria-label="QueryWeaver on GitHub" title="QueryWeaver on GitHub" style="display:inline-block;">
-          <img src="/static/icons/github.svg" alt="GitHub" style="height:28px;width:auto;display:block;" />
-        </a>
-      </div>
+            <!-- Live Demo Content -->
+            <div class="demo-content active" id="live-demo">
+                <div class="demo-label">Your Business Question:</div>
+                <div class="demo-question">Show me the top 5 customers by order count in London.</div>
+
+                <div class="demo-sql-header">
+                    <div class="demo-label">Generated SQL:</div>
+                    <div class="demo-success">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="8" fill="#059669"></circle>
+                            <path d="M5.5 8L7 9.5L10.5 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                        <span>Success</span>
+                    </div>
+                </div>
+                <pre class="demo-sql" id="demo-sql"><span class="sql-keyword">SELECT</span> c.companyName, <span class="sql-func">COUNT</span>(o.orderID) <span class="sql-keyword">AS</span> order_count
+<span class="sql-keyword">FROM</span> customers c
+<span class="sql-keyword">JOIN</span> orders o <span class="sql-keyword">ON</span> c.customerID = o.customerID
+<span class="sql-keyword">WHERE</span> c.city = <span class="sql-string">'London'</span>
+<span class="sql-keyword">GROUP BY</span> c.companyName
+<span class="sql-keyword">ORDER BY</span> order_count <span class="sql-keyword">DESC</span>
+<span class="sql-keyword">LIMIT</span> <span class="sql-number">5</span>;</pre>
+
+                <div class="demo-cta">
+                    <button class="btn-light" id="demo-next">Try another question</button>
+                </div>
+            </div>
+
+            <!-- Tool Overview Video Content -->
+            <div class="demo-content" id="tool-overview">
+                <div class="demo-label">Tool Overview:</div>
+                <div class="video-container">
+                    <iframe 
+                        class="demo-video" 
+                        src="https://www.youtube.com/embed/F4hwuLlISP4" 
+                        title="QueryWeaver Tool Overview" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <p class="video-description" style="color: #6b7280; font-size: 0.9rem; margin-top: 0.5rem;">
+                    Discover how QueryWeaver transforms natural language into precise SQL queries across multiple enterprise databases.
+                </p>
+            </div>
+
+            <!-- Setup Guide Video Content -->
+            <div class="demo-content" id="setup-guide">
+                <div class="demo-label">Docker Setup Guide:</div>
+                <div class="video-container">
+                    <div class="video-placeholder">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <h4>Docker Setup Video</h4>
+                        <p>Step-by-step installation and configuration walkthrough</p>
+                    </div>
+                </div>
+                <p class="video-description" style="color: #6b7280; font-size: 0.9rem; margin-top: 0.5rem;">
+                    Get QueryWeaver running in your environment in minutes with our comprehensive Docker setup guide.
+                </p>
+            </div>
+        </aside>
+
+        <!-- Features section -->
+        <section class="features-section">
+            <div class="features-row">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" stroke="currentColor" stroke-width="2"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" stroke="currentColor" stroke-width="2"></line>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Graph-Powered Accuracy</h3>
+                    <p class="feature-desc">We built a semantic layer using FalkorDB's graph capabilities that understands your schema relationships, giving you dramatically more accurate text-to-SQL generation than traditional approaches.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" stroke="currentColor" stroke-width="2" fill="none"></path>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" stroke="currentColor" stroke-width="2" fill="none"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Open Source Foundation</h3>
+                    <p class="feature-desc">QueryWeaver is built entirely on top of FalkorDB as an open source project. You can see exactly how we're doing text-to-SQL, contribute improvements, or adapt it for your specific use cases.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 9 7c0 1.3.5 2.6 1.5 3.5.7.8 1.3 1.5 1.5 2.5" stroke="currentColor" stroke-width="2" fill="none"></path>
+                            <path d="M9 18h6" stroke="currentColor" stroke-width="2"></path>
+                            <path d="M10 22h4" stroke="currentColor" stroke-width="2"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Contextual Memory</h3>
+                    <p class="feature-desc">We're using Graphiti for chat history and agentic memory, powered by FalkorDB. QueryWeaver remembers your previous queries and learns your data patterns to provide increasingly personalized results.</p>
+                </div>
+            </div>
+        </section>
     </div>
-  </header>
 
-  <div class="landing-container">
-
-    <!-- Left hero -->
-    <section class="hero-left">
-      <h1 class="hero-title">Transform Plain<br />English into Powerful<br />SQL.</h1>
-      <p class="hero-sub">The intelligent AI solution that connects your business questions to data across multiple
-        databases. Ask a question in plain English and get runnable SQL and visual results.</p>
-
-      <div class="hero-ctas">
-        <a href="https://app.queryweaver.ai/chat" class="btn-pill">Sign Up for Free</a>
-        <a href="https://app.queryweaver.ai/chat" class="btn-ghost">Sign In</a>
-      </div>
-    </section>
-
-    <!-- Right demo card -->
-    <aside class="demo-card">
-      <div class="demo-inner">
-        <div class="demo-label">Your Business Question:</div>
-        <div class="demo-question">Which customers from Germany who bought 'Chai' also have an open support ticket in
-          Salesforce?</div>
-
-        <div class="demo-sql-header">
-          <div class="demo-label">Generated SQL:</div>
-          <div class="demo-success" style="display:none;">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="8" cy="8" r="8" fill="#10B981" />
-              <path d="M5.5 8L7 9.5L10.5 6" stroke="white" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" />
-            </svg>
-            <span>Success</span>
-          </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            All Rights Reserved © | <a href="https://www.falkordb.com/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a> | Powered by FalkorDB
         </div>
-        <pre class="demo-sql"></pre>
+    </footer>
 
-        <div class="demo-cta">
-          <button id="demo-next" class="btn-full" type="button">Try another question</button>
-        </div>
-      </div>
-      <script>
-        (function () {
-          const examples = [
-            {
-              q: "Which customers from Germany who bought 'Chai' also have an open support ticket in Salesforce?",
-              sql: `SELECT c.companyName\nFROM customers c\nJOIN orders o ON c.customerID = o.customerID\nJOIN order_details od ON o.orderID = od.orderID\nJOIN products p ON od.productID = p.productID\nJOIN salesforce_tickets st ON c.customerID = st.customerID\nWHERE c.country = 'Germany'\n  AND p.productName = 'Chai'\n  AND st.status = 'Open';`
-            },
-            {
-              q: "Show me the top 5 customers by order count in London.",
-              sql: `SELECT c.companyName, COUNT(o.orderID) AS order_count\nFROM customers c\nJOIN orders o ON c.customerID = o.customerID\nWHERE c.city = 'London'\nGROUP BY c.companyName\nORDER BY order_count DESC\nLIMIT 5;`
-            },
-            {
-              q: "What is the quarterly revenue trend for the 'Beverages' category over the last two years?",
-              sql: `SELECT strftime('%Y-Q%q', o.orderDate) AS quarter,\n  SUM(od.unitPrice * od.quantity) AS total_revenue\nFROM orders o\nJOIN order_details od ON o.orderID = od.orderID\nJOIN products p ON od.productID = p.productID\nJOIN categories cat ON p.categoryID = cat.categoryID\nWHERE cat.categoryName = 'Beverages'\n  AND o.orderDate >= date('now', '-2 years')\nGROUP BY quarter\nORDER BY quarter;`
+    <script>
+        // Tab switching functionality
+        function initTabs() {
+            const tabs = document.querySelectorAll('.demo-tab');
+            const contents = document.querySelectorAll('.demo-content');
+
+            function switchToTab(targetId) {
+                // Remove active class from all tabs and contents
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to target tab and content
+                const targetTab = document.querySelector(`[data-tab="${targetId}"]`);
+                const targetContent = document.getElementById(targetId);
+                
+                if (targetTab && targetContent) {
+                    targetTab.classList.add('active');
+                    targetContent.classList.add('active');
+                }
             }
-          ];
 
-          let idx = 0;
-          const qEl = document.querySelector('.demo-question');
-          const sEl = document.querySelector('.demo-sql');
-          const successEl = document.querySelector('.demo-success');
-          const btn = document.getElementById('demo-next');
-
-          let typingTimer = null;
-          const typingSpeed = 15; // ms per character
-
-          function escapeHtml(s) {
-            return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-          }
-
-          // very small client-side SQL highlighter (runs after typing completes)
-          function highlightSQL(sql) {
-            if (!sql) return '';
-            // escape first
-            let out = escapeHtml(sql);
-            // strings (single quotes)
-            out = out.replace(/('[^']*')/g, '<span class="sql-string">$1</span>');
-            // keywords
-            out = out.replace(/\b(SELECT|FROM|JOIN|ON|WHERE|AND|OR|GROUP|BY|ORDER|LIMIT|AS|IN|IS|NULL|INNER|LEFT|RIGHT|OUTER)\b/gi,
-              function (m) { return '<span class="sql-keyword">' + m + '</span>'; });
-            // aggregate/functions
-            out = out.replace(/\b(COUNT|SUM|AVG|MIN|MAX)\b/gi, function (m) { return '<span class="sql-func">' + m + '</span>'; });
-            // numbers
-            out = out.replace(/\b(\d+\.?\d*)\b/g, '<span class="sql-number">$1</span>');
-            return out;
-          }
-
-          function renderFull(i) {
-            const ex = examples[i % examples.length];
-            if (qEl) qEl.textContent = ex.q;
-            if (sEl) {
-              sEl.classList.remove('typing');
-              // show highlighted SQL after typing completes
-              sEl.innerHTML = highlightSQL(ex.sql);
-            }
-            if (successEl) successEl.style.display = 'flex';
-          }
-
-          function typeSql(text) {
-            if (!sEl) return;
-            // hide success while typing
-            if (successEl) successEl.style.display = 'none';
-            // stop any previous typing
-            if (typingTimer) {
-              clearInterval(typingTimer);
-              typingTimer = null;
-            }
-            sEl.classList.add('typing');
-            sEl.textContent = '';
-            let pos = 0;
-            typingTimer = setInterval(() => {
-              pos += 1;
-              // progressively render highlighted HTML for the substring so colors appear while typing
-              if (sEl) sEl.innerHTML = highlightSQL(text.slice(0, pos));
-              if (pos >= text.length) {
-                clearInterval(typingTimer);
-                typingTimer = null;
-                sEl.classList.remove('typing');
-                if (sEl) sEl.innerHTML = highlightSQL(text);
-                // show success when typing completes
-                if (successEl) successEl.style.display = 'flex';
-              }
-            }, typingSpeed);
-          }
-
-          if (btn) {
-            btn.addEventListener('click', function () {
-              idx = (idx + 1) % examples.length;
-              const ex = examples[idx];
-              if (qEl) qEl.textContent = ex.q;
-              // animate SQL typing
-              typeSql(ex.sql);
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetId = tab.getAttribute('data-tab');
+                    switchToTab(targetId);
+                });
             });
-          }
 
-          // initial render: use typing animation for first example too
-          const firstExample = examples[0];
-          if (qEl) qEl.textContent = firstExample.q;
-          typeSql(firstExample.sql);
-        })();
-      </script>
-  </div>
+            // Add functionality to "Run Live Demo" button
+            const runDemoBtn = document.getElementById('run-demo-btn');
+            if (runDemoBtn) {
+                runDemoBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    switchToTab('live-demo');
+                    // Scroll to demo card smoothly
+                    document.querySelector('.demo-card').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                });
+            }
+        }
 
-  <!-- Feature boxes -->
-  <section class="features-row" aria-label="Key features">
-    <div class="feature-card">
-      <div class="feature-icon" aria-hidden="true">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="h-6 w-6 text-primary-blue transition-transform group-hover:rotate-6">
-          <circle cx="18" cy="5" r="3"></circle>
-          <circle cx="6" cy="12" r="3"></circle>
-          <circle cx="18" cy="19" r="3"></circle>
-          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-        </svg>
-      </div>
-      <h3 class="feature-title">Knowledge Graph Power</h3>
-      <p class="feature-desc">Goes beyond simple column matching to understand complex business logic and relationships
-        in
-        your data.</p>
-    </div>
+        // Interactive demo functionality
+        function initInteractiveDemo() {
+            const examples = [
+                {
+                    q: "Show me the top 5 customers by order count in London.",
+                    sql: `SELECT c.companyName, COUNT(o.orderID) AS order_count\nFROM customers c\nJOIN orders o ON c.customerID = o.customerID\nWHERE c.city = 'London'\nGROUP BY c.companyName\nORDER BY order_count DESC\nLIMIT 5;`
+                },
+                {
+                    q: "Show me Q4 revenue by customer segment, including customers who haven't ordered recently but have high lifetime value, with year-over-year comparison",
+                    sql: `WITH customer_ltv AS (\n  SELECT \n    c.customerID,\n    c.segment,\n    SUM(od.unitPrice * od.quantity) as lifetime_value,\n    MAX(o.orderDate) as last_order_date,\n    DATEDIFF(CURDATE(), MAX(o.orderDate)) as days_since_last_order\n  FROM customers c\n  LEFT JOIN orders o ON c.customerID = o.customerID\n  LEFT JOIN order_details od ON o.orderID = od.orderID\n  GROUP BY c.customerID, c.segment\n),\nq4_revenue AS (\n  SELECT \n    c.segment,\n    SUM(od.unitPrice * od.quantity) as revenue,\n    EXTRACT(YEAR FROM o.orderDate) as year\n  FROM customers c\n  JOIN orders o ON c.customerID = o.customerID\n  JOIN order_details od ON o.orderID = od.orderID\n  WHERE EXTRACT(QUARTER FROM o.orderDate) = 4\n    AND EXTRACT(YEAR FROM o.orderDate) IN (2023, 2024)\n  GROUP BY c.segment, EXTRACT(YEAR FROM o.orderDate)\n)\nSELECT \n  ltv.segment,\n  COALESCE(q4_24.revenue, 0) as q4_2024_revenue,\n  COALESCE(q4_23.revenue, 0) as q4_2023_revenue,\n  ROUND(((COALESCE(q4_24.revenue, 0) - COALESCE(q4_23.revenue, 0)) \n    / NULLIF(q4_23.revenue, 0)) * 100, 2) as yoy_growth_percent,\n  ROUND(AVG(ltv.lifetime_value), 2) as avg_lifetime_value,\n  COUNT(CASE WHEN ltv.days_since_last_order > 90 THEN 1 END) as at_risk_customers,\n  COUNT(*) as total_customers\nFROM customer_ltv ltv\nLEFT JOIN q4_revenue q4_24 ON ltv.segment = q4_24.segment AND q4_24.year = 2024\nLEFT JOIN q4_revenue q4_23 ON ltv.segment = q4_23.segment AND q4_23.year = 2023\nGROUP BY ltv.segment, q4_24.revenue, q4_23.revenue\nHAVING avg_lifetime_value > 1000\nORDER BY q4_2024_revenue DESC;`
+                },
+                {
+                    q: "Which customers from Germany who bought 'Chai' also have an open support ticket in Salesforce?",
+                    sql: `SELECT c.companyName\nFROM customers c\nJOIN orders o ON c.customerID = o.customerID\nJOIN order_details od ON o.orderID = od.orderID\nJOIN products p ON od.productID = p.productID\nJOIN salesforce_tickets st ON c.customerID = st.customerID\nWHERE c.country = 'Germany'\n  AND p.productName = 'Chai'\n  AND st.status = 'Open';`
+                }
+            ];
 
-    <div class="feature-card">
-      <div class="feature-icon" aria-hidden="true">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="h-6 w-6 text-primary-blue transition-transform group-hover:scale-110">
-          <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
-          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
-          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
-        </svg>
-      </div>
-      <h3 class="feature-title">Multi-Database Joins</h3>
-      <p class="feature-desc">Ask a single question and get answers from disparate sources like PostgreSQL and
-        Salesforce
-        in one go.</p>
-    </div>
+            let idx = 0;
+            const qEl = document.querySelector('.demo-question');
+            const sEl = document.querySelector('.demo-sql');
+            const successEl = document.querySelector('.demo-success');
+            const btn = document.getElementById('demo-next');
 
-    <div class="feature-card">
-      <div class="feature-icon" aria-hidden="true">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="h-6 w-6 text-primary-blue transition-transform group-hover:animate-pulse">
-          <path
-            d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 9 7c0 1.3.5 2.6 1.5 3.5.7.8 1.3 1.5 1.5 2.5">
-          </path>
-          <path d="M9 18h6"></path>
-          <path d="M10 22h4"></path>
-        </svg>
-      </div>
-      <h3 class="feature-title">Proactive Guidance</h3>
-      <p class="feature-desc">Get intelligent suggestions to clarify ambiguity and optimize your queries before you even
-        run them.</p>
-    </div>
-  </section>
-  <footer id="powered-by-falkordb">
-    Powered by <a href="https://falkordb.com" target="_blank" rel="noopener">
-      <img src="/static/icons/logo.svg" alt="FalkorDB Logo" />
-    </a>
-  </footer>
+            let typingTimer = null;
+            const typingSpeed = 20;
 
+            function escapeHtml(s) {
+                return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+
+            function highlightSQL(sql) {
+                if (!sql) return '';
+                let out = escapeHtml(sql);
+                out = out.replace(/('[^']*')/g, '<span class="sql-string">$1</span>');
+                out = out.replace(/\b(SELECT|FROM|JOIN|ON|WHERE|AND|OR|GROUP|BY|ORDER|LIMIT|AS|IN|IS|NULL|INNER|LEFT|RIGHT|OUTER|DESC|ASC|WITH|HAVING|CASE|WHEN|THEN|END|EXTRACT|YEAR|QUARTER|DATEDIFF|CURDATE|MAX|COALESCE|NULLIF|ROUND|AVG)\b/gi,
+                    function(m) { return '<span class="sql-keyword">' + m + '</span>'; });
+                out = out.replace(/\b(COUNT|SUM|AVG|MIN|MAX|strftime|date)\b/gi, 
+                    function(m) { return '<span class="sql-func">' + m + '</span>'; });
+                out = out.replace(/\b(\d+\.?\d*)\b/g, '<span class="sql-number">$1</span>');
+                return out;
+            }
+
+            function typeSql(text) {
+                if (!sEl) return;
+                if (successEl) successEl.style.display = 'none';
+                if (typingTimer) {
+                    clearInterval(typingTimer);
+                    typingTimer = null;
+                }
+                sEl.classList.add('typing');
+                sEl.innerHTML = '';
+                let pos = 0;
+                typingTimer = setInterval(() => {
+                    pos += 1;
+                    if (sEl) sEl.innerHTML = highlightSQL(text.slice(0, pos));
+                    if (pos >= text.length) {
+                        clearInterval(typingTimer);
+                        typingTimer = null;
+                        sEl.classList.remove('typing');
+                        if (sEl) sEl.innerHTML = highlightSQL(text);
+                        if (successEl) successEl.style.display = 'flex';
+                    }
+                }, typingSpeed);
+            }
+
+            if (btn) {
+                btn.addEventListener('click', function() {
+                    idx = (idx + 1) % examples.length;
+                    const ex = examples[idx];
+                    if (qEl) qEl.textContent = ex.q;
+                    typeSql(ex.sql);
+                });
+            }
+
+            // Initial load
+            const firstExample = examples[0];
+            if (qEl) qEl.textContent = firstExample.q;
+            typeSql(firstExample.sql);
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initTabs();
+            initInteractiveDemo();
+        });
+    </script>
 </body>
-
 </html>
