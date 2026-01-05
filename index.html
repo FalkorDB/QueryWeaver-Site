@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QueryWeaver — Text-to-SQL for Enterprise Databases</title>
-    <meta name="description" content="Transform plain English into powerful SQL queries. Securely connect your MySQL or Postgres database with our open-source, graph-powered solution.">
+    <title>QueryWeaver — Graph-Powered Text-to-SQL for Enterprise Data Democratization</title>
+    <meta name="description" content="Graph-powered Text-to-SQL that reduces join errors by 40%. Securely connect MySQL or PostgreSQL databases. Open-source solution with enterprise-grade accuracy for natural language data analysis.">
     
     <!-- SEO and Social Meta -->
-    <meta property="og:title" content="QueryWeaver — Text-to-SQL for Enterprise Databases">
-    <meta property="og:description" content="Graph-powered natural language to SQL conversion with enterprise security and accuracy">
+    <meta property="og:title" content="QueryWeaver — Graph-Powered Text-to-SQL for Enterprise Data Democratization">
+    <meta property="og:description" content="Graph-powered Text-to-SQL that reduces join errors by 40%. Securely connect MySQL or PostgreSQL databases with enterprise-grade accuracy.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.queryweaver.ai">
     <meta property="og:image" content="https://www.queryweaver.ai/static/icons/queryweaver-logo.jpg">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://www.queryweaver.ai/static/icons/queryweaver-logo.jpg">
-    <meta name="twitter:title" content="QueryWeaver — Text-to-SQL for Enterprise Databases">
-    <meta name="twitter:description" content="Graph-powered natural language to SQL conversion with enterprise security and accuracy">
+    <meta name="twitter:title" content="QueryWeaver — Graph-Powered Text-to-SQL for Enterprise Data Democratization">
+    <meta name="twitter:description" content="Graph-powered Text-to-SQL that reduces join errors by 40%. Securely connect MySQL or PostgreSQL databases with enterprise-grade accuracy.">
     <meta name="robots" content="index, follow">
     
     <!-- Structured Data -->
@@ -24,14 +24,86 @@
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "QueryWeaver",
-      "description": "Graph-powered text-to-SQL conversion for enterprise databases",
+      "description": "Graph-powered text-to-SQL conversion for enterprise databases with 40% reduction in join errors",
       "applicationCategory": "DatabaseApplication",
-      "operatingSystem": "Web",
+      "operatingSystem": "Linux, Windows, macOS",
+      "softwareVersion": "1.0",
+      "license": "AGPL-3.0",
+      "url": "https://www.queryweaver.ai",
+      "downloadUrl": "https://github.com/FalkorDB/QueryWeaver",
+      "screenshot": "https://www.queryweaver.ai/static/icons/queryweaver-logo.jpg",
+      "author": {
+        "@type": "Organization",
+        "name": "FalkorDB",
+        "url": "https://www.falkordb.com"
+      },
       "offers": {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "USD"
-      }
+      },
+      "softwareRequirements": "Docker",
+      "releaseNotes": "Open source AGPL-3.0 licensed",
+      "keywords": ["text-to-sql", "natural language processing", "database query", "MySQL", "PostgreSQL", "graph database", "NL2SQL", "GraphRAG"],
+      "featureList": [
+        "Graph-powered schema understanding",
+        "Support for MySQL and PostgreSQL databases",
+        "Agentic memory system",
+        "Docker deployment",
+        "Azure OpenAI compatibility",
+        "Self-hosted private deployment"
+      ],
+      "applicationSubCategory": "Database Management, Natural Language Processing"
+    }
+    </script>
+    
+    <!-- FAQ Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does QueryWeaver handle complex SQL joins?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "QueryWeaver uses FalkorDB's graph capabilities to understand your database relationships at a deeper level. This graph-powered semantic layer enables more accurate joins, better constraint handling, and SQL that reflects your actual business logic, reducing join errors by 40% compared to traditional text-to-SQL tools."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is QueryWeaver compatible with Azure OpenAI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, QueryWeaver is compatible with Azure OpenAI. The tool supports various LLM providers and can be configured to work with Azure OpenAI services for enterprise deployments requiring specific compliance and data residency requirements."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What databases does QueryWeaver support?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "QueryWeaver currently supports MySQL and PostgreSQL databases. You can securely connect your existing database instances and query them using natural language without exposing sensitive data."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I deploy QueryWeaver?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "QueryWeaver can be deployed using Docker in just 5 minutes. The open-source solution allows for self-hosted, private deployment in your own infrastructure, giving you complete control over your data and ensuring enterprise security."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What license does QueryWeaver use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "QueryWeaver is licensed under AGPL-3.0, an open-source license. This allows you to examine the code, contribute improvements, and adapt the system for your specific enterprise requirements while ensuring the software remains open source."
+          }
+        }
+      ]
     }
     </script>
     
@@ -65,7 +137,7 @@
         <div class="site-header-inner">
             <div class="logo-container">
                 <a href="/" class="logo-link" aria-label="QueryWeaver Home">
-                    <img src="/static/icons/sqlogo.svg" alt="QueryWeaver" class="logo-img">
+                    <img src="/static/icons/sqlogo.svg" alt="QueryWeaver logo - Graph-powered Text-to-SQL for Enterprise Databases" class="logo-img">
                 </a>
             </div>
             <nav class="social-links" aria-label="External links">
@@ -88,16 +160,16 @@
         <section class="hero-section">
             <!-- Hero content -->
             <div class="hero-content">
-                <h1 class="hero-title">Graph-Powered Text-to-SQL</h1>
+                <h1 class="hero-title">Graph-Powered Text-to-SQL for Enterprise Data Democratization</h1>
                 <p class="hero-subtitle">Connect your MySQL or Postgres database securely. Query in plain English. Get dramatically more accurate results than traditional Text2SQL tools.</p>
                 <div class="hero-ctas">
-                    <a href="https://app.queryweaver.ai" class="btn btn-primary" id="run-demo-btn" type="button">
+                    <a href="https://app.queryweaver.ai" class="btn btn-primary" id="run-demo-btn" type="button" target="_blank" rel="noopener noreferrer">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                             <path d="M8 5v14l11-7z"/>
                         </svg>
                         Try Live Demo
                     </a>
-                    <a href="https://github.com/FalkorDB/QueryWeaver/" class="btn btn-secondary">
+                    <a href="https://github.com/FalkorDB/QueryWeaver/" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                             <polyline points="14,2 14,8 20,8"/>
@@ -196,7 +268,7 @@
         <!-- Features section -->
         <section class="features-section" id="features">
             <div class="features-intro">
-                <h2>Why QueryWeaver Gets Better Results</h2>
+                <h2>Solving the NL2SQL Accuracy Gap with GraphRAG</h2>
                 <p>Three core capabilities that deliver enterprise-grade accuracy where traditional text-to-SQL tools fall short.</p>
             </div>
             <div class="features-grid">
@@ -222,7 +294,7 @@
                             <path d="M3 12l9 4 9-4"></path>
                         </svg>
                     </div>
-                    <h3 class="feature-title">Open Source Foundation</h3>
+                    <h3 class="feature-title">Self-Hosted AI SQL Assistant with Open Source Foundation</h3>
                     <p class="feature-desc">Built entirely on FalkorDB as an open source project. You can examine exactly how we're doing text-to-SQL conversion, contribute improvements, or adapt the system for your specific enterprise requirements.</p>
                 </article>
 
@@ -232,7 +304,7 @@
                             <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                         </svg>
                     </div>
-                    <h3 class="feature-title">Contextual Memory System</h3>
+                    <h3 class="feature-title">Agentic Memory and Personalized Data History</h3>
                     <p class="feature-desc">Using Graphiti for chat history and agentic memory, powered by FalkorDB. QueryWeaver remembers your previous queries, learns your data patterns, and provides increasingly personalized results over time.</p>
                 </article>
             </div>
@@ -532,7 +604,7 @@
                     demoCard.innerHTML = `
                         <div class="error-fallback">
                             <h3>Demo Temporarily Unavailable</h3>
-                            <p>Please try refreshing the page or <a href="https://github.com/FalkorDB/falkordb">visit our GitHub</a> for more information.</p>
+                            <p>Please try refreshing the page or <a href="https://github.com/FalkorDB/falkordb" target="_blank" rel="noopener noreferrer">visit our GitHub</a> for more information.</p>
                         </div>
                     `;
                 }
