@@ -20,12 +20,4 @@
         <priority>0.8</priority>
     </url>
     
-    <!-- External resources referenced in the site -->
-    <url>
-        <loc>https://app.queryweaver.ai</loc>
-        <lastmod>2026-01-05</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    
 </urlset>
