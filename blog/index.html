@@ -194,6 +194,9 @@
                         <div class="form-group">
                             <input type="email" name="email" placeholder="Email Address" class="contact-input" required>
                         </div>
+                        <div class="form-group">
+                            <textarea name="message" placeholder="Write a short message" class="contact-input" required style="min-height: 80px; resize: vertical;"></textarea>
+                        </div>
                         <button type="submit" class="contact-btn">Send Message</button>
                         <div class="form-status" id="form-status"></div>
                     </form>
@@ -221,12 +224,11 @@
         <div class="footer-bottom">
             <div class="footer-bottom-content">
                 <div class="copyright">
-                    © 2026 QueryWeaver. All rights reserved.
+                    © 2026 FalkorDB. All rights reserved.
                 </div>
                 <div class="footer-legal">
                     <a href="https://www.falkordb.com/privacy-policy/" target="_blank">Privacy Policy</a>
                     <a href="https://www.falkordb.com/terms-of-service/" target="_blank">Terms of Service</a>
-                    <a href="https://www.falkordb.com/privacy-policy/#cookie-policy" target="_blank">Cookie Settings</a>
                 </div>
             </div>
         </div>
@@ -321,7 +323,12 @@
                             formStatus.className = 'form-status success';
                             contactForm.reset();
                         } else {
-                            formStatus.textContent = 'Oops! Problem sending message';
+                            const data = await response.json();
+                            if (Object.hasOwn(data, 'errors')) {
+                                formStatus.textContent = data["errors"].map(error => error["message"]).join(", ");
+                            } else {
+                                formStatus.textContent = "Oops! Problem sending message";
+                            }
                             formStatus.className = 'form-status error';
                         }
                     } catch (error) {
@@ -330,6 +337,11 @@
                     } finally {
                         btn.disabled = false;
                         btn.innerHTML = originalBtnContent;
+                        
+                        setTimeout(() => {
+                            formStatus.textContent = '';
+                            formStatus.className = 'form-status';
+                        }, 10000);
                     }
                 });
             }

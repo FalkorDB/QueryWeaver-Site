@@ -14,10 +14,17 @@
     <link rel="stylesheet" href="/static/css/main.css">
     <style>
         .post-container {
-            max-width: 740px;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 4rem 1.5rem 8rem;
+            padding: 6rem 1.5rem 8rem;
         }
+
+        @media (max-width: 768px) {
+            .post-container {
+                padding: 4rem 1.25rem 6rem;
+            }
+        }
+
         .post-back-link {
             display: inline-flex;
             align-items: center;
@@ -25,89 +32,138 @@
             text-decoration: none;
             font-weight: 600;
             margin-bottom: 3rem;
-            transition: transform 0.2s ease;
+            transition: all 0.2s ease;
+            font-size: 0.9375rem;
         }
+
         .post-back-link:hover {
+            color: var(--primary-700);
             transform: translateX(-4px);
         }
+
         .post-back-link svg {
             margin-right: 0.5rem;
         }
+
         .post-header {
-            margin-bottom: 4rem;
+            margin-bottom: 3.5rem;
         }
+
         .post-date {
-            font-size: 0.875rem;
-            font-weight: 600;
+            font-size: 0.8125rem;
+            font-weight: 700;
             color: var(--primary-600);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.1em;
             margin-bottom: 1rem;
         }
+
         .post-title {
-            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-size: clamp(2.25rem, 6vw, 3.75rem);
             font-weight: 800;
-            line-height: 1.1;
+            line-height: 1.15;
             letter-spacing: -0.04em;
             color: var(--gray-900);
             margin-bottom: 1.5rem;
         }
+
+        .post-subtitle {
+            font-size: clamp(1.125rem, 3vw, 1.5rem);
+            color: var(--gray-500);
+            line-height: 1.4;
+            font-weight: 450;
+        }
+
         .post-hero-image {
             width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
             border-radius: 24px;
             margin-bottom: 4rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-xl);
         }
+
         .post-content {
-            font-size: 1.25rem;
-            line-height: 1.7;
+            font-size: 1.1875rem;
+            line-height: 1.8;
             color: var(--gray-800);
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
+
+        @media (max-width: 768px) {
+            .post-content {
+                font-size: 1.125rem;
+                line-height: 1.7;
+            }
+            .post-header {
+                margin-bottom: 2.5rem;
+            }
+            .post-hero-image {
+                margin-bottom: 2.5rem;
+                border-radius: 16px;
+            }
+        }
+
         .post-content p {
             margin-bottom: 2rem;
         }
+
         .post-content h2 {
-            font-size: 2rem;
+            font-size: clamp(1.75rem, 4vw, 2.25rem);
             font-weight: 700;
-            margin: 3.5rem 0 1.5rem;
-            letter-spacing: -0.02em;
+            margin: 4rem 0 1.5rem;
+            letter-spacing: -0.03em;
             color: var(--gray-900);
+            line-height: 1.3;
         }
+
         .post-content ul, .post-content ol {
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
             padding-left: 1.5rem;
         }
+
         .post-content li {
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
+
         .post-content blockquote {
             border-left: 4px solid var(--primary-600);
             padding-left: 2rem;
-            margin: 3rem 0;
+            margin: 3.5rem 0;
             font-style: italic;
-            color: var(--gray-600);
-            font-size: 1.5rem;
-            line-height: 1.5;
+            color: var(--gray-700);
+            font-size: clamp(1.25rem, 3vw, 1.5rem);
+            line-height: 1.6;
+            background: var(--primary-50);
+            padding: 2.5rem 2rem 2.5rem 3rem;
+            border-radius: 0 16px 16px 0;
+            position: relative;
         }
+
         .post-content pre {
             background: var(--gray-900);
             color: #e5e7eb;
-            padding: 2rem;
-            border-radius: 16px;
+            padding: 1.5rem;
+            border-radius: 12px;
             overflow-x: auto;
-            margin: 2.5rem 0;
-            font-size: 1rem;
+            margin: 3rem 0;
+            font-size: 0.9375rem;
+            line-height: 1.5;
+            border: 1px solid var(--gray-800);
+            max-width: 100%;
         }
-        
-        @media (max-width: 768px) {
-            .post-container {
-                padding-top: 2rem;
+
+        @media (max-width: 640px) {
+            .post-content pre {
+                padding: 1.25rem;
+                font-size: 0.875rem;
+                margin: 2rem 0;
             }
-            .post-title {
-                font-size: 2.5rem;
-            }
-            .post-content {
-                font-size: 1.125rem;
+            .post-content blockquote {
+                padding: 1.5rem 1.25rem 1.5rem 2rem;
+                margin: 2.5rem 0;
             }
         }
     </style>
@@ -149,7 +205,7 @@
             <header class="post-header">
                 <div class="post-date">January 7, 2026</div>
                 <h1 class="post-title">Your Post Title Goes Here</h1>
-                <p style="font-size: 1.5rem; color: var(--gray-500); line-height: 1.4;">A compelling subtitle that expands on the title and encourages reading.</p>
+                <p class="post-subtitle">A compelling subtitle that expands on the title and encourages reading.</p>
             </header>
 
             <img src="/static/icons/queryweaver.webp" alt="Feature" class="post-hero-image">
@@ -219,6 +275,9 @@
                         <div class="form-group">
                             <input type="email" name="email" placeholder="Email Address" class="contact-input" required>
                         </div>
+                        <div class="form-group">
+                            <textarea name="message" placeholder="Write a short message" class="contact-input" required style="min-height: 80px; resize: vertical;"></textarea>
+                        </div>
                         <button type="submit" class="contact-btn">Send Message</button>
                         <div class="form-status" id="form-status"></div>
                     </form>
@@ -246,23 +305,67 @@
         <div class="footer-bottom">
             <div class="footer-bottom-content">
                 <div class="copyright">
-                    © 2026 QueryWeaver. All rights reserved.
+                    © 2026 FalkorDB. All rights reserved.
                 </div>
                 <div class="footer-legal">
                     <a href="https://www.falkordb.com/privacy-policy/" target="_blank">Privacy Policy</a>
                     <a href="https://www.falkordb.com/terms-of-service/" target="_blank">Terms of Service</a>
-                    <a href="https://www.falkordb.com/privacy-policy/#cookie-policy" target="_blank">Cookie Settings</a>
                 </div>
             </div>
         </div>
     </footer>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Contact Form Logic
             const contactForm = document.getElementById('contact-form');
             const formStatus = document.getElementById('form-status');
 
             if (contactForm) {
-                // ... contact form listener ...
+                contactForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const btn = contactForm.querySelector('button');
+                    const originalBtnContent = btn.innerHTML;
+                    
+                    btn.disabled = true;
+                    btn.innerHTML = 'Sending...';
+                    
+                    const formData = new FormData(contactForm);
+                    
+                    try {
+                        const response = await fetch(contactForm.action, {
+                            method: "POST",
+                            body: formData,
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            formStatus.textContent = 'Message sent successfully!';
+                            formStatus.className = 'form-status success';
+                            contactForm.reset();
+                        } else {
+                            const data = await response.json();
+                            if (Object.hasOwn(data, 'errors')) {
+                                formStatus.textContent = data["errors"].map(error => error["message"]).join(", ");
+                            } else {
+                                formStatus.textContent = "Oops! Problem sending message";
+                            }
+                            formStatus.className = 'form-status error';
+                        }
+                    } catch (error) {
+                        formStatus.textContent = "Oops! Problem sending message";
+                        formStatus.className = 'form-status error';
+                    } finally {
+                        btn.disabled = false;
+                        btn.innerHTML = originalBtnContent;
+                        
+                        setTimeout(() => {
+                            formStatus.textContent = '';
+                            formStatus.className = 'form-status';
+                        }, 10000);
+                    }
+                });
             }
 
             // Newsletter Form Logic
