@@ -601,7 +601,7 @@
                     
                     // Focus for screen readers
                     setTimeout(() => {
-                        questionEl.focus();
+                        questionEl.focus({ preventScroll: true });
                         setTimeout(() => questionEl.blur(), 100);
                     }, 100);
                 }
