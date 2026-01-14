@@ -197,6 +197,7 @@
     font-weight: 700;
     color: var(--gray-900);
     letter-spacing: -0.025em;
+    display: none;
   }
 
   .logo-skeleton {
@@ -787,6 +788,10 @@
     box-shadow: var(--shadow-md);
   }
 
+  .video-container iframe {
+    border: 0;
+  }
+
   .video-placeholder {
     width: 100%;
     height: 100%;
@@ -1110,6 +1115,25 @@
     display: flex;
     flex-direction: column;
     gap: 5rem;
+  }
+
+  /* No results message */
+  .no-results-message {
+    display: none;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--gray-500);
+  }
+
+  .no-results-icon {
+    margin-bottom: 1.5rem;
+    opacity: 0.5;
+  }
+
+  .no-results-title {
+    font-size: 1.25rem;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
   }
 
   .blog-post-card {
@@ -1560,6 +1584,12 @@
     font-family: inherit;
   }
 
+  .contact-input[type="textarea"], 
+  textarea.contact-input {
+    min-height: 80px;
+    resize: vertical;
+  }
+
   .contact-input:focus {
     border-color: var(--primary-600);
     background: white;
@@ -1629,8 +1659,10 @@
 
   .footer-built-with {
     margin-top: 1.5rem;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     color: var(--gray-500);
+    text-align: center;
+    white-space: nowrap;
   }
 
   /* Gradient text for hero title */
