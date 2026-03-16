@@ -387,6 +387,18 @@
     z-index: 10;
   }
 
+  @media (max-width: 640px) {
+    .hero-ctas {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .hero-ctas .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
   .hero-badge-container {
     margin-top: 1rem;
     display: flex;
