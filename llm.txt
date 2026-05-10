@@ -6,7 +6,7 @@ QueryWeaver is an open-source, graph-powered Text-to-SQL solution designed for e
 - Graph-Powered Schema Understanding: Uses FalkorDB to model relationships for better joins and accuracy.
 - Contextual Memory: Leverages Graphiti for chat history and agentic memory.
 - Open Source: Built on FalkorDB and available on GitHub.
-- Database Support: Works with MySQL and PostgreSQL.
+- Database Support: Works with MySQL, PostgreSQL, and Snowflake.
 
 ## Key Links
 - Homepage: https://www.queryweaver.ai
